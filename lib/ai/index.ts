@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { experimental_wrapLanguageModel as wrapLanguageModel } from 'ai';
 
-import { type Model } from '@/lib/model';
+import { type Model } from '@/lib/ai/model';
 
 import { customMiddleware } from './custom-middleware';
 

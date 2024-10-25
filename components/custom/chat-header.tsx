@@ -5,7 +5,7 @@ import { ModelSelector } from '@/components/custom/model-selector';
 import { SidebarToggle } from '@/components/custom/sidebar-toggle';
 import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/ui/tooltip';
-import { Model } from '@/lib/model';
+import { Model } from '@/lib/ai/model';
 
 export function ChatHeader({
   selectedModelName,

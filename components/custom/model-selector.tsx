@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { type Model, models } from '@/lib/model';
+import { type Model, models } from '@/lib/ai/model';
 import { cn } from '@/lib/utils';
 
 export function ModelSelector({
