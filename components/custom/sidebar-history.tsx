@@ -38,8 +38,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { Chat } from '@/db/schema';
+import { Chat } from '@/lib/db/schemas/chats';
 import { fetcher, getTitleFromChat } from '@/lib/utils';
+
 
 export function SidebarHistory({ user }: { user: User | undefined }) {
   const { setOpenMobile } = useSidebar();

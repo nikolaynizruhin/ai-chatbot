@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { customModel } from '@/ai';
 import { auth } from '@/app/(auth)/auth';
-import { deleteChatById, getChatById, saveChat } from '@/db/queries';
+import { deleteChatById, getChatById, saveChat } from '@/lib/db/queries';
 import { Model, models } from '@/lib/model';
 
 export async function POST(request: Request) {
