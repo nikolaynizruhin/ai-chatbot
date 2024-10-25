@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 
 import { auth } from '@/app/(auth)/auth';
 import { Chat as PreviewChat } from '@/components/custom/chat';
+import { DEFAULT_MODEL_NAME, models } from '@/lib/ai/model';
 import { getChatById } from '@/lib/db/queries';
 import { Chat } from '@/lib/db/schemas/chats';
-import { DEFAULT_MODEL_NAME, models } from '@/lib/ai/model';
 import { convertToUIMessages } from '@/lib/utils';
 
 

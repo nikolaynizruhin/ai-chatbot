@@ -1,10 +1,10 @@
 import { convertToCoreMessages, Message, streamText } from 'ai';
 import { z } from 'zod';
 
-import { customModel } from '@/lib/ai';
 import { auth } from '@/app/(auth)/auth';
-import { deleteChatById, getChatById, saveChat } from '@/lib/db/queries';
+import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
+import { deleteChatById, getChatById, saveChat } from '@/lib/db/queries';
 
 export async function POST(request: Request) {
   const {
