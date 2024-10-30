@@ -7,17 +7,17 @@ import { venues } from "./venues";
 export const appointments = pgTable(
   'appointments',
   {
-    id: serial('id').primaryKey(),
-    name: varchar('name').notNull(),
-    image: varchar('image').notNull(),
-    venueId: integer('venue_id').notNull().references(() => venues.id),
-    activityId: integer('activity_id').notNull().references(() => activities.id),
-    startAt: timestamp('start_at').notNull(),
-    endAt: timestamp('end_at').notNull(),
-    embedding: vector('embedding', { dimensions: 1536 }),
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    name: varchar().notNull(),
+    image: varchar().notNull(),
+    venueId: integer().notNull().references(() => venues.id),
+    activityId: integer().notNull().references(() => activities.id),
+    startAt: timestamp().notNull(),
+    endAt: timestamp().notNull(),
+    embedding: vector({ dimensions: 1536 }),
   },
   table => ({
-    embeddingIndex: index('embeddingAppointmentsIndex').using('hnsw', table.embedding.op('vector_cosine_ops')),
+    embeddingIndex: index().using('hnsw', table.embedding.op('vector_cosine_ops')),
   })
 );
 

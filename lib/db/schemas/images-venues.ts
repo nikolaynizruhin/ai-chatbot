@@ -7,9 +7,9 @@ import { venues } from "./venues";
 export const imagesVenues = pgTable(
   'images_venues',
   {
-    id: serial('id').primaryKey(),
-    imageId: integer('image_id').notNull().references(() => images.id),
-    venueId: integer('venue_id').notNull().references(() => venues.id),
+    id: integer().primaryKey().generatedAlwaysAsIdentity(),
+    imageId: integer().notNull().references(() => images.id),
+    venueId: integer().notNull().references(() => venues.id),
   },
   table => ({
     unq: unique().on(table.imageId, table.venueId),

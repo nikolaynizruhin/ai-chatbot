@@ -1,10 +1,10 @@
 import { relations } from "drizzle-orm";
-import { pgTable, serial, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, varchar } from "drizzle-orm/pg-core";
 
 import { imagesVenues } from "./images-venues";
 
 export const images = pgTable('images', {
-  id: serial('id').primaryKey(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   url: varchar('url').notNull().unique(),
 });
 

@@ -1,31 +1,31 @@
 CREATE TABLE IF NOT EXISTS "activities_venues" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "activities_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"activity_id" integer NOT NULL,
 	"venue_id" integer NOT NULL,
-	CONSTRAINT "activities_venues_activity_id_venue_id_unique" UNIQUE("activity_id","venue_id")
+	CONSTRAINT "activities_venues_activityId_venueId_unique" UNIQUE("activity_id","venue_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "activities" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "activities_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" varchar NOT NULL,
 	CONSTRAINT "activities_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "amenities_venues" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "amenities_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"amenity_id" integer NOT NULL,
 	"venue_id" integer NOT NULL,
-	CONSTRAINT "amenities_venues_amenity_id_venue_id_unique" UNIQUE("amenity_id","venue_id")
+	CONSTRAINT "amenities_venues_amenityId_venueId_unique" UNIQUE("amenity_id","venue_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "amenities" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "amenities_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" varchar NOT NULL,
 	CONSTRAINT "amenities_name_unique" UNIQUE("name")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "appointments" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "appointments_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" varchar NOT NULL,
 	"image" varchar NOT NULL,
 	"venue_id" integer NOT NULL,
@@ -43,27 +43,27 @@ CREATE TABLE IF NOT EXISTS "chats" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "images_venues" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "images_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"image_id" integer NOT NULL,
 	"venue_id" integer NOT NULL,
-	CONSTRAINT "images_venues_image_id_venue_id_unique" UNIQUE("image_id","venue_id")
+	CONSTRAINT "images_venues_imageId_venueId_unique" UNIQUE("image_id","venue_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "images" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "images_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"url" varchar NOT NULL,
 	CONSTRAINT "images_url_unique" UNIQUE("url")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "plans_venues" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "plans_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"plan_id" integer NOT NULL,
 	"venue_id" integer NOT NULL,
-	CONSTRAINT "plans_venues_plan_id_venue_id_unique" UNIQUE("plan_id","venue_id")
+	CONSTRAINT "plans_venues_planId_venueId_unique" UNIQUE("plan_id","venue_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "plans" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "plans_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" varchar NOT NULL,
 	CONSTRAINT "plans_name_unique" UNIQUE("name")
 );
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "venues" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"name" varchar NOT NULL,
 	"description" varchar NOT NULL,
 	"image" varchar NOT NULL,
@@ -151,5 +151,5 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "embeddingAppointmentsIndex" ON "appointments" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "embeddingVenuesIndex" ON "venues" USING hnsw ("embedding" vector_cosine_ops);
+CREATE INDEX IF NOT EXISTS "appointments_embedding_index" ON "appointments" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "venues_embedding_index" ON "venues" USING hnsw ("embedding" vector_cosine_ops);

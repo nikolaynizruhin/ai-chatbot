@@ -5,10 +5,10 @@ import { pgTable, timestamp, json, uuid } from "drizzle-orm/pg-core";
 import { users } from "./users";
 
 export const chats = pgTable("chats", {
-  id: uuid("id").primaryKey().notNull().defaultRandom(),
-  createdAt: timestamp("created_at").notNull(),
-  messages: json("messages").notNull(),
-  userId: uuid("user_id")
+  id: uuid().primaryKey().notNull().defaultRandom(),
+  createdAt: timestamp().notNull(),
+  messages: json().notNull(),
+  userId: uuid()
     .notNull()
     .references(() => users.id),
 });

@@ -1,5 +1,5 @@
 {
-  "id": "506df92e-1be8-47f8-994d-206b7777943f",
+  "id": "7a290b35-fab5-46fc-a162-804961557ad6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,9 +10,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "activities_venues_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "activity_id": {
           "name": "activity_id",
@@ -58,15 +69,16 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "activities_venues_activity_id_venue_id_unique": {
-          "name": "activities_venues_activity_id_venue_id_unique",
+        "activities_venues_activityId_venueId_unique": {
+          "name": "activities_venues_activityId_venueId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "activity_id",
             "venue_id"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.activities": {
       "name": "activities",
@@ -74,9 +86,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "activities_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "name": {
           "name": "name",
@@ -96,7 +119,8 @@
             "name"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.amenities_venues": {
       "name": "amenities_venues",
@@ -104,9 +128,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "amenities_venues_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "amenity_id": {
           "name": "amenity_id",
@@ -152,15 +187,16 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "amenities_venues_amenity_id_venue_id_unique": {
-          "name": "amenities_venues_amenity_id_venue_id_unique",
+        "amenities_venues_amenityId_venueId_unique": {
+          "name": "amenities_venues_amenityId_venueId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "amenity_id",
             "venue_id"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.amenities": {
       "name": "amenities",
@@ -168,9 +204,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "amenities_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "name": {
           "name": "name",
@@ -190,7 +237,8 @@
             "name"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.appointments": {
       "name": "appointments",
@@ -198,9 +246,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "appointments_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "name": {
           "name": "name",
@@ -246,8 +305,8 @@
         }
       },
       "indexes": {
-        "embeddingAppointmentsIndex": {
-          "name": "embeddingAppointmentsIndex",
+        "appointments_embedding_index": {
+          "name": "appointments_embedding_index",
           "columns": [
             {
               "expression": "embedding",
@@ -292,7 +351,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.chats": {
       "name": "chats",
@@ -341,7 +401,8 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.images_venues": {
       "name": "images_venues",
@@ -349,9 +410,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "images_venues_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "image_id": {
           "name": "image_id",
@@ -397,15 +469,16 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "images_venues_image_id_venue_id_unique": {
-          "name": "images_venues_image_id_venue_id_unique",
+        "images_venues_imageId_venueId_unique": {
+          "name": "images_venues_imageId_venueId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "image_id",
             "venue_id"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.images": {
       "name": "images",
@@ -413,9 +486,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "images_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "url": {
           "name": "url",
@@ -435,7 +519,8 @@
             "url"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.plans_venues": {
       "name": "plans_venues",
@@ -443,9 +528,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "plans_venues_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "plan_id": {
           "name": "plan_id",
@@ -491,15 +587,16 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "plans_venues_plan_id_venue_id_unique": {
-          "name": "plans_venues_plan_id_venue_id_unique",
+        "plans_venues_planId_venueId_unique": {
+          "name": "plans_venues_planId_venueId_unique",
           "nullsNotDistinct": false,
           "columns": [
             "plan_id",
             "venue_id"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.plans": {
       "name": "plans",
@@ -507,9 +604,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "plans_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "name": {
           "name": "name",
@@ -529,7 +637,8 @@
             "name"
           ]
         }
-      }
+      },
+      "checkConstraints": {}
     },
     "public.users": {
       "name": "users",
@@ -558,7 +667,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     },
     "public.venues": {
       "name": "venues",
@@ -566,9 +676,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "integer",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "venues_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "name": {
           "name": "name",
@@ -614,8 +735,8 @@
         }
       },
       "indexes": {
-        "embeddingVenuesIndex": {
-          "name": "embeddingVenuesIndex",
+        "venues_embedding_index": {
+          "name": "venues_embedding_index",
           "columns": [
             {
               "expression": "embedding",
@@ -633,12 +754,14 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "enums": {},
   "schemas": {},
   "sequences": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
