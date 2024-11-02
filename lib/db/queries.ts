@@ -1,12 +1,19 @@
 "server-only";
 
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 
 import { chats } from "./schemas/chats";
 import { User, users } from "./schemas/users";
 
 import { db } from ".";
+import { activities } from "./schemas/activities";
+import { amenities } from "./schemas/amenities";
+import { plans } from "./schemas/plans";
+import { venues } from "./schemas/venues";
+import { activitiesVenues } from "./schemas/activities-venues";
+import { amenitiesVenues } from "./schemas/amenities-venues";
+import { plansVenues } from "./schemas/plans-venues";
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -90,6 +97,65 @@ export async function getChatById({ id }: { id: string }) {
     return selectedChat;
   } catch (error) {
     console.error("Failed to get chat by id from database");
+    throw error;
+  }
+}
+
+export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = []) {
+  try {
+    return await db.query.venues.findMany({
+      where: and(
+        activities.length > 0 ? inArray(venues.id, db.select({ id: activitiesVenues.venueId }).from(activitiesVenues).where(inArray(activitiesVenues.activityId, activities))) : undefined,
+        amenities.length > 0 ? inArray(venues.id, db.select({ id: amenitiesVenues.venueId }).from(amenitiesVenues).where(inArray(amenitiesVenues.amenityId, amenities))) : undefined,
+        plans.length > 0 ? inArray(venues.id, db.select({ id: plansVenues.venueId }).from(plansVenues).where(inArray(plansVenues.planId, plans))) : undefined,
+      ),
+      with: {
+        activitiesVenues: {
+          with: {
+            activity: true
+          }
+        },
+        amenitiesVenues: {
+          with: {
+            amenity: true
+          }
+        },
+        plansVenues: {
+          with: {
+            plan: true
+          }
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Failed to get venues from database");
+    throw error;
+  }
+}
+
+export async function getActivities() {
+  try {
+    return await db.select().from(activities);
+  } catch (error) {
+    console.error("Failed to get activities from database");
+    throw error;
+  }
+}
+
+export async function getAmenities() {
+  try {
+    return await db.select().from(amenities);
+  } catch (error) {
+    console.error("Failed to get amenities from database");
+    throw error;
+  }
+}
+
+export async function getPlans() {
+  try {
+    return await db.select().from(plans);
+  } catch (error) {
+    console.error("Failed to get plans from database");
     throw error;
   }
 }

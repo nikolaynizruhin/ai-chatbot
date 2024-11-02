@@ -52,13 +52,19 @@ export const Message = ({
                     <div key={toolCallId}>
                       {toolName === 'getWeather' ? (
                         <Weather weatherAtLocation={result} />
+                      ) : toolName === 'searchVenues' ? (
+                        <p>{JSON.stringify(result)}</p>
                       ) : null}
                     </div>
                   );
                 } else {
                   return (
                     <div key={toolCallId} className="skeleton">
-                      {toolName === 'getWeather' ? <Weather /> : null}
+                      {toolName === 'getWeather' ? (
+                        <Weather />
+                      ) : toolName === 'searchVenues' ? (
+                        <p>Thinking...</p>
+                      ) : null}
                     </div>
                   );
                 }

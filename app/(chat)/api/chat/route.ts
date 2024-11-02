@@ -4,7 +4,9 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
-import { deleteChatById, getChatById, saveChat } from '@/lib/db/queries';
+import { deleteChatById, getActivities, getAmenities, getChatById, getPlans, getVenues, saveChat } from '@/lib/db/queries';
+import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
+import { findRelevantVenues } from '@/lib/ai/embedding';
 
 export async function POST(request: Request) {
   const {
@@ -24,12 +26,37 @@ export async function POST(request: Request) {
     return new Response('Model not found', { status: 404 });
   }
 
+  const [activities, amenities, plans] = await Promise.all([
+    getActivities(),
+    getAmenities(),
+    getPlans(),
+  ]);
+
+  const activity = convertToEnum(activities);
+  const activityMap = convertToMap(activities);
+
+  const amenity = convertToEnum(amenities);
+  const amenityMap = convertToMap(amenities);
+
+  const plan = convertToEnum(plans);
+  const planMap = convertToMap(plans);
+
   const coreMessages = convertToCoreMessages(messages);
 
   const result = await streamText({
     model: customModel(model),
-    system:
-      'you are a friendly assistant! keep your responses concise and helpful.',
+    system: `\n
+      - you help users search venues!
+      - keep your responses limited to a sentence.
+      - DO NOT output lists.
+      - after every tool call, pretend you're showing the result to the user and keep your response limited to a phrase.
+      - today's date is ${new Date().toLocaleDateString()}.
+      - ask follow up questions to nudge user into the optimal flow
+      - ask for any details you don't know, like activity of venue, etc.'
+      - here's the optimal flow
+        - search for venues
+      '
+    `,
     messages: coreMessages,
     maxSteps: 5,
     tools: {
@@ -46,6 +73,23 @@ export async function POST(request: Request) {
 
           const weatherData = await response.json();
           return weatherData;
+        },
+      },
+      searchVenues: {
+        description: "Search for venues based on the given parameters",
+        parameters: z.object({
+          activities: z.enum(activity).array().describe("Activities that can be practiced on site"),
+          amenities: z.enum(amenity).array().describe("Amenities available on site"),
+          plans: z.enum(plan).array().describe("Membership plans allowed on site"),
+        }),
+        execute: async ({ activities, amenities, plans }) => {
+          activities = convertToId(activities, activityMap);
+          amenities = convertToId(amenities, amenityMap);
+          plans = convertToId(plans, planMap)
+
+          const result = await getVenues(activities, amenities, plans);
+
+          return result;
         },
       },
     },

@@ -136,3 +136,18 @@ export function getTitleFromChat(chat: Chat) {
 
   return firstMessage.content;
 }
+
+export function convertToMap(array: { id: number, name: string }[]): { [key: string]: number } {
+  return array.reduce((map: { [key: string]: number }, obj: { id: number, name: string }) => {
+    map[obj.name] = obj.id;
+    return map;
+  }, {});
+}
+
+export function convertToEnum(array: { id: number, name: string }[]): [string, ...string[]] {
+  return array.map(obj => obj.name) as [string, ...string[]]
+}
+
+export function convertToId(array: string[], map: { [key: string]: number }): number[] {
+  return array.map(item => map[item])
+}
