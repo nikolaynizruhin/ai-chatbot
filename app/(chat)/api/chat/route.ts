@@ -6,7 +6,6 @@ import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
 import { deleteChatById, getActivities, getAmenities, getChatById, getPlans, getVenues, saveChat } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
-import { findRelevantVenues } from '@/lib/ai/embedding';
 
 export async function POST(request: Request) {
   const {

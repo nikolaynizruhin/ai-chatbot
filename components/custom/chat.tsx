@@ -2,7 +2,7 @@
 
 import { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ChatHeader } from '@/components/custom/chat-header';
 import { Message as PreviewMessage } from '@/components/custom/message';
@@ -34,6 +34,14 @@ export function Chat({
     useScrollToBottom<HTMLDivElement>();
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+
+    navigator.geolocation.getCurrentPosition(position => {
+      document.cookie = `position=${position.coords.longitude},${position.coords.latitude}; path=/; max-age=${60 * 60}`;
+    });
+  }, []);
 
   return (
     <div className="flex flex-col min-w-0 h-dvh bg-background">

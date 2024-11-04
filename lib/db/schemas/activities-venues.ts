@@ -11,9 +11,7 @@ export const activitiesVenues = pgTable(
     activityId: integer().notNull().references(() => activities.id),
     venueId: integer().notNull().references(() => venues.id),
   }, 
-  table => ({
-    unq: unique().on(table.activityId, table.venueId),
-  })
+  table => [unique().on(table.activityId, table.venueId)],
 );
 
 export const activitiesVenuesRelations = relations(activitiesVenues, ({ one }) => ({

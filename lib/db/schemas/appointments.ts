@@ -16,9 +16,7 @@ export const appointments = pgTable(
     endAt: timestamp().notNull(),
     embedding: vector({ dimensions: 1536 }),
   },
-  table => ({
-    embeddingIndex: index().using('hnsw', table.embedding.op('vector_cosine_ops')),
-  })
+  table => [index().using('hnsw', table.embedding.op('vector_cosine_ops'))],
 );
 
 export const appointmentsRelations = relations(appointments, ({ one }) => ({

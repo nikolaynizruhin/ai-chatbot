@@ -11,9 +11,7 @@ export const imagesVenues = pgTable(
     imageId: integer().notNull().references(() => images.id),
     venueId: integer().notNull().references(() => venues.id),
   },
-  table => ({
-    unq: unique().on(table.imageId, table.venueId),
-  })
+  table => [unique().on(table.imageId, table.venueId)],
 );
 
 export const imagesVenuesRelations = relations(imagesVenues, ({ one }) => ({
