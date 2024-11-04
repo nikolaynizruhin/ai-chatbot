@@ -1,3 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
+--> statement-breakpoint
+CREATE EXTENSION IF NOT EXISTS vector;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "activities_venues" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "activities_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"activity_id" integer NOT NULL,
