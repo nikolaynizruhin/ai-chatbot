@@ -6,6 +6,7 @@ import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
 import { deleteChatById, getActivities, getAmenities, getChatById, getPlans, getVenues, saveChat } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
+import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
   const {
@@ -39,6 +40,9 @@ export async function POST(request: Request) {
 
   const plan = convertToEnum(plans);
   const planMap = convertToMap(plans);
+
+  const cookieStore = await cookies()
+  const position = cookieStore.get('position')?.value ?? ''
 
   const coreMessages = convertToCoreMessages(messages);
 
@@ -86,7 +90,7 @@ export async function POST(request: Request) {
           amenities = convertToId(amenities, amenityMap);
           plans = convertToId(plans, planMap)
 
-          const result = await getVenues(activities, amenities, plans);
+          const result = await getVenues(activities, amenities, plans, position);
 
           return result;
         },

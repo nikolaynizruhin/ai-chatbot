@@ -39,7 +39,7 @@ export function Chat({
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(position => {
-      document.cookie = `position=${position.coords.longitude},${position.coords.latitude}; path=/; max-age=${60 * 60}`;
+      document.cookie = `position=${position.coords.latitude},${position.coords.longitude}; path=/; max-age=${60 * 60}`;
     });
   }, []);
 

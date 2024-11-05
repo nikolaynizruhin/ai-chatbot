@@ -1,5 +1,5 @@
 {
-  "id": "ef920ea5-49c3-4070-81c5-3b63af1b4e53",
+  "id": "83030a92-8f7a-48cd-8ad6-5dcfd3377b39",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -745,9 +745,9 @@
         },
         "location": {
           "name": "location",
-          "type": "point",
+          "type": "geometry(point)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "embedding": {
           "name": "embedding",
@@ -771,6 +771,21 @@
           "isUnique": false,
           "concurrently": false,
           "method": "hnsw",
+          "with": {}
+        },
+        "venues_location_index": {
+          "name": "venues_location_index",
+          "columns": [
+            {
+              "expression": "location",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "gist",
           "with": {}
         }
       },

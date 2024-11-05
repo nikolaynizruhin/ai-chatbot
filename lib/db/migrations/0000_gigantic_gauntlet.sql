@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS "venues" (
 	"image" varchar NOT NULL,
 	"website" varchar NOT NULL,
 	"address" varchar NOT NULL,
-	"location" "point",
+	"location" geometry(point) NOT NULL,
 	"embedding" vector(1536)
 );
 --> statement-breakpoint
@@ -156,4 +156,5 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "appointments_embedding_index" ON "appointments" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "venues_embedding_index" ON "venues" USING hnsw ("embedding" vector_cosine_ops);
+CREATE INDEX IF NOT EXISTS "venues_embedding_index" ON "venues" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "venues_location_index" ON "venues" USING gist ("location");

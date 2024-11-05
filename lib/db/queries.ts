@@ -1,7 +1,7 @@
 "server-only";
 
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 
 import { chats } from "./schemas/chats";
 import { User, users } from "./schemas/users";
@@ -101,9 +101,14 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
-export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = []) {
+export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string) {
   try {
+    const location = sql`ST_SetSRID(ST_MakePoint(52.5317463, 13.3832419), 4326)`;
+
     return await db.query.venues.findMany({
+      extras: {
+        distance: sql`ROUND(ST_DistanceSphere(${venues.location}, ${location}))`.as('distance'),
+      },
       where: and(
         activities.length > 0 ? inArray(venues.id, db.select({ id: activitiesVenues.venueId }).from(activitiesVenues).where(inArray(activitiesVenues.activityId, activities))) : undefined,
         amenities.length > 0 ? inArray(venues.id, db.select({ id: amenitiesVenues.venueId }).from(amenitiesVenues).where(inArray(amenitiesVenues.amenityId, amenities))) : undefined,
@@ -128,6 +133,7 @@ export async function getVenues(activities: number[] = [], amenities: number[] =
       }
     });
   } catch (error) {
+    console.log(error)
     console.error("Failed to get venues from database");
     throw error;
   }

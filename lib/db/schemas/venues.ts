@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { index, integer, pgTable, point, varchar, vector } from "drizzle-orm/pg-core";
+import { geometry, index, integer, pgTable, point, varchar, vector } from "drizzle-orm/pg-core";
 
 import { activitiesVenues } from "./activities-venues";
 import { amenitiesVenues } from "./amenities-venues";
@@ -14,10 +14,13 @@ export const venues = pgTable(
     image: varchar().notNull(),
     website: varchar().notNull(),
     address: varchar().notNull(),
-    location: point(),
+    location: geometry({ type: 'point', mode: 'tuple', srid: 4326 }).notNull(),
     embedding: vector({ dimensions: 1536 }),
   },
-  table => [index().using('hnsw', table.embedding.op('vector_cosine_ops'))],
+  table => [
+    index().using('hnsw', table.embedding.op('vector_cosine_ops')),
+    index().using('gist', table.location),
+  ],
 );
 
 export const venuesRelations = relations(venues, ({ many }) => ({
