@@ -101,9 +101,9 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
-export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string) {
+export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string[] = []) {
   try {
-    const location = sql`ST_SetSRID(ST_MakePoint(52.5317463, 13.3832419), 4326)`;
+    const location = sql`ST_SetSRID(ST_MakePoint(${position[0]}, ${position[1]}), 4326)`;
 
     return await db.query.venues.findMany({
       extras: {

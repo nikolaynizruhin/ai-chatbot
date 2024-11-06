@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   const planMap = convertToMap(plans);
 
   const cookieStore = await cookies()
-  const position = cookieStore.get('position')?.value ?? ''
+  const position = cookieStore.get('position')?.value.split(',') ?? []
 
   const coreMessages = convertToCoreMessages(messages);
 
