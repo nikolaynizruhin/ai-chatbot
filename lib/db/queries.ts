@@ -1,7 +1,7 @@
 "server-only";
 
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { and, asc, desc, eq, inArray, lte, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 
 import { chats } from "./schemas/chats";
 import { User, users } from "./schemas/users";
@@ -101,7 +101,7 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
-export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string[] = []) {
+export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string[] = [], radius: number) {
   try {
     const location = sql`ST_SetSRID(ST_MakePoint(${position[0]}, ${position[1]}), 4326)`;
     const distance = sql`ROUND(ST_DistanceSphere(${venues.location}, ${location}))`;
@@ -114,7 +114,7 @@ export async function getVenues(activities: number[] = [], amenities: number[] =
         activities.length > 0 ? inArray(venues.id, db.select({ id: activitiesVenues.venueId }).from(activitiesVenues).where(inArray(activitiesVenues.activityId, activities))) : undefined,
         amenities.length > 0 ? inArray(venues.id, db.select({ id: amenitiesVenues.venueId }).from(amenitiesVenues).where(inArray(amenitiesVenues.amenityId, amenities))) : undefined,
         plans.length > 0 ? inArray(venues.id, db.select({ id: plansVenues.venueId }).from(plansVenues).where(inArray(plansVenues.planId, plans))) : undefined,
-        sql`${distance} <= 6000`
+        sql`${distance} <= ${radius}`
       ),
       with: {
         activitiesVenues: {

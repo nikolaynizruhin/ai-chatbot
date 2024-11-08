@@ -84,13 +84,14 @@ export async function POST(request: Request) {
           activities: z.enum(activity).array().describe("Activities that can be practiced on site"),
           amenities: z.enum(amenity).array().describe("Amenities available on site"),
           plans: z.enum(plan).array().describe("Membership plans allowed on site"),
+          radius: z.number().positive().describe("The radius in which the search for venues takes place in meters. If the user requests venues 'near me', set the radius to 3000 meters. Default radius is 10000"),
         }),
-        execute: async ({ activities, amenities, plans }) => {
+        execute: async ({ activities, amenities, plans, radius }) => {
           activities = convertToId(activities, activityMap);
           amenities = convertToId(amenities, amenityMap);
           plans = convertToId(plans, planMap)
 
-          const result = await getVenues(activities, amenities, plans, position);
+          const result = await getVenues(activities, amenities, plans, position, radius);
 
           return result;
         },
