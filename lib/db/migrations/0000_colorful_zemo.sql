@@ -46,6 +46,27 @@ CREATE TABLE IF NOT EXISTS "chats" (
 	"user_id" uuid NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "cities" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "cities_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"name" varchar NOT NULL,
+	"location" geometry(point) NOT NULL,
+	"country_id" integer NOT NULL,
+	CONSTRAINT "cities_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "countries" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "countries_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"name" varchar NOT NULL,
+	CONSTRAINT "countries_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "districts" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "districts_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"name" varchar NOT NULL,
+	"city_id" integer NOT NULL,
+	CONSTRAINT "districts_name_unique" UNIQUE("name")
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "images_venues" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "images_venues_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"image_id" integer NOT NULL,
@@ -85,6 +106,7 @@ CREATE TABLE IF NOT EXISTS "venues" (
 	"image" varchar NOT NULL,
 	"website" varchar NOT NULL,
 	"address" varchar NOT NULL,
+	"zip" varchar NOT NULL,
 	"location" geometry(point) NOT NULL,
 	"embedding" vector(1536)
 );
@@ -132,6 +154,18 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "cities" ADD CONSTRAINT "cities_country_id_countries_id_fk" FOREIGN KEY ("country_id") REFERENCES "public"."countries"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "districts" ADD CONSTRAINT "districts_city_id_cities_id_fk" FOREIGN KEY ("city_id") REFERENCES "public"."cities"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "images_venues" ADD CONSTRAINT "images_venues_image_id_images_id_fk" FOREIGN KEY ("image_id") REFERENCES "public"."images"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -156,5 +190,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "appointments_embedding_index" ON "appointments" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "cities_location_index" ON "cities" USING gist ("location");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "venues_embedding_index" ON "venues" USING hnsw ("embedding" vector_cosine_ops);--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "venues_location_index" ON "venues" USING gist ("location");

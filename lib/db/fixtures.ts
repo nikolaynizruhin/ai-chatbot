@@ -20,6 +20,21 @@ const amenities = [
   { name: 'towels' },
 ];
 
+const countries = [
+  { name: 'Germany' },
+];
+
+const cities = [
+  { name: 'Berlin', location: [52.520008, 13.404954] as [number, number], countryId: 1 },
+];
+
+const districts = [
+  { name: 'Mitte', cityId: 1 },
+  { name: 'Kreuzberg', cityId: 1 },
+  { name: 'Lichtenberg', cityId: 1 },
+  { name: 'Schoneberg', cityId: 1 },
+];
+
 const images = [
   { url: 'https://assets-global.website-files.com/6214e36730138347ab0f8f6d/646cdce9de433dd9d191fe38_061121GERMANYDUESSELDORF_HOLMESPLACE_200996.jpg' },
   { url: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/03/41/87/c3/holmes-place-potsdamer.jpg?w=1200&h=-1&s=1' },
@@ -53,8 +68,10 @@ const venues = [
     name: 'Holmes Place',
     description: 'Holmes Place Club offers an impressive ambiance and an oasis for body, mind, and soul. Located next to the Stadtmitte subway station, the fitness studio is easily accessible.',
     image: 'https://assets-global.website-files.com/6214e36730138347ab0f8f6d/6220df2d042f3438ccd3a55f_bf56e288-7497-4dc4-b7e3-5f8fdcf9b36f-_2_.jpg',
-    address: 'Friedrichstraße 68, 10117 Berlin',
-    location: [52.512677143789375, 13.39051779995928],
+    address: 'Friedrichstraße 68',
+    zip: '10117',
+    location: [52.512677143789375, 13.39051779995928] as [number, number],
+    districtId: 1,
     website: 'https://en.holmesplace.de',
     embedding: 'Name: Holmes; Address: Friedrichstraße 68, 10117 Berlin; Plans: M, L, XL; Amenities: showers, lockers, towels; Activities: fitness, yoga, dance, swimming;',
   },
@@ -62,8 +79,10 @@ const venues = [
     name: "Rocycle",
     description: "Rocycle is an effective, sweaty and fun workout that takes your mind off everything. We make our community fit and happy. Every day. Every ride.",
     image: "https://classpass-res.cloudinary.com/image/upload/f_auto/q_auto/dqc1yt0xqpvordfpfbu7.jpg",
-    address: "Linienstraße 41, 10119 Berlin",
-    location: [52.528569023123694, 13.409480753411511],
+    address: "Linienstraße 41",
+    zip: '10119',
+    location: [52.528569023123694, 13.409480753411511] as [number, number],
+    districtId: 1,
     website: "https://rocyclestudios.com",
     embedding: 'Name: Rocycle; Address: Linienstraße 41, 10119 Berlin; Plans: M, L, XL; Amenities: showers, lockers; Activities: fitness, cycling;',
   },
@@ -71,8 +90,10 @@ const venues = [
     name: "Boulderklub",
     description: "Since September 2015, everyone from young to old, from beginners to experts, has had the opportunity to pursue their passion for bouldering or get to know this unique form of climbing at the Kreuzberg Boulder Club.",
     image: "https://mitvergnuegen.com/wp-content/uploads/2017/03/boulderklub-kreuzberg-wiebke-2.jpg",
-    address: "Ohlauer Str. 38, 10999 Berlin",
-    location: [52.495219906474766, 13.428709436852403],
+    address: "Ohlauer Str. 38",
+    zip: '10999',
+    location: [52.495219906474766, 13.428709436852403] as [number, number],
+    districtId: 2,
     website: "https://boulderklub.de",
     embedding: 'Name: Boulderklub; Address: Ohlauer Str. 38, 10999 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga, bouldering;',
   },
@@ -80,8 +101,10 @@ const venues = [
     name: "BEAT81",
     description: "Join the movement and burn up to 1000 kcal in less than 45 min with powerful HIIT and strength group classes in a BEAT81 location near you.",
     image: "https://classpass-res.cloudinary.com/image/upload/f_auto/q_auto/f1axnpl8ytg3kc6o5oa6.jpg",
-    address: "Rosa-Luxemburg-Straße 17, 10178 Berlin",
-    location: [52.5251393851855, 13.410136665165558],
+    address: "Rosa-Luxemburg-Straße 17",
+    zip: '10178',
+    location: [52.5251393851855, 13.410136665165558] as [number, number],
+    districtId: 1,
     website: "https://www.beat81.com",
     embedding: 'Name: BEAT81; Address: Rosa-Luxemburg-Straße 17, 10178 Berlin; Plans: M, L, XL; Amenities: showers; Activities: fitness, bootcamp, functional training;',
   },
@@ -89,8 +112,10 @@ const venues = [
     name: "Squash House",
     description: "At our partner Squash House in Lichtenberg you can play squash, badminton and table tennis. In addition to modern courts, the Squash House in Lichtenberg also offers you a great wellness area so you can relax a little after the game.",
     image: "https://miro.medium.com/v2/resize:fit:900/1*uDFV7dLmlgnjGcD52iX5ag.jpeg",
-    address: "Vulkanstraße 3, 10367 Berlin",
-    location: [52.524315470431276, 13.486097336082949],
+    address: "Vulkanstraße 3",
+    zip: '10367',
+    location: [52.524315470431276, 13.486097336082949] as [number, number],
+    districtId: 3,
     website: "https://www.squash-house.de",
     embedding: 'Name: Squash House; Address: Vulkanstraße 3, 10367 Berlin; Plans: M, L, XL; Amenities: showers; Activities: badminton, squash, table tennis;'
   },
@@ -98,8 +123,10 @@ const venues = [
     name: "Yoga on the Move",
     description: "The Shala is the home base of the Yoga on the Move collective. After teaching pop-up classes in the most beautiful places in Berlin for many years, we now invite you to our own studio in Schöneberg.",
     image: "https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    address: "Akazienstraße 27, 10823 Berlin",
-    location: [52.48683125206266, 13.354570732143268],
+    address: "Akazienstraße 27",
+    zip: '10823',
+    location: [52.48683125206266, 13.354570732143268] as [number, number],
+    districtId: 4,
     website: "https://www.yogaonthemove.de",
     embedding: 'Name: Yoga on the Move; Address: Akazienstraße 27, 10823 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga;'
   }
@@ -335,6 +362,9 @@ const fixtures = {
   amenitiesVenues,
   plansVenues,
   imagesVenues,
+  countries,
+  cities,
+  districts,
 }
 
 export default fixtures;

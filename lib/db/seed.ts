@@ -14,12 +14,18 @@ import { venues } from "./schemas/venues";
 import { addEmbeddings } from "../ai/embedding";
 
 import { db } from ".";
+import { countries } from "./schemas/countries";
+import { cities } from "./schemas/cities";
+import { districts } from "./schemas/districts";
 
 config({
   path: ".env.local",
 });
 
 async function seed() {
+  await db.insert(countries).values(fixtures.countries);
+  await db.insert(cities).values(fixtures.cities);
+  await db.insert(districts).values(fixtures.districts);
   await db.insert(activities).values(fixtures.activities);
   await db.insert(amenities).values(fixtures.amenities);
   await db.insert(images).values(fixtures.images);
