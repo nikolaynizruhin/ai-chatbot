@@ -56,7 +56,7 @@ const venues = [
     address: 'Friedrichstraße 68, 10117 Berlin',
     location: [52.512677143789375, 13.39051779995928],
     website: 'https://en.holmesplace.de',
-    embedding: 'Name: Holmes Place; Description: Holmes Place Club offers an impressive ambiance and an oasis for body, mind, and soul. Located next to the Stadtmitte subway station, the fitness studio is easily accessible.; Address: Friedrichstraße 68, 10117 Berlin; Plans: M, L, XL; Amenities: showers, lockers, towels; Activities: fitness, yoga, dance, swimming;',
+    embedding: 'Name: Holmes; Address: Friedrichstraße 68, 10117 Berlin; Plans: M, L, XL; Amenities: showers, lockers, towels; Activities: fitness, yoga, dance, swimming;',
   },
   {
     name: "Rocycle",
@@ -65,7 +65,7 @@ const venues = [
     address: "Linienstraße 41, 10119 Berlin",
     location: [52.528569023123694, 13.409480753411511],
     website: "https://rocyclestudios.com",
-    embedding: 'Name: Rocycle; Description: Rocycle is an effective, sweaty and fun workout that takes your mind off everything. We make our community fit and happy. Every day. Every ride.; Address: Linienstraße 41, 10119 Berlin; Plans: M, L, XL; Amenities: showers, lockers; Activities: fitness, cycling;',
+    embedding: 'Name: Rocycle; Address: Linienstraße 41, 10119 Berlin; Plans: M, L, XL; Amenities: showers, lockers; Activities: fitness, cycling;',
   },
   {
     name: "Boulderklub",
@@ -74,7 +74,7 @@ const venues = [
     address: "Ohlauer Str. 38, 10999 Berlin",
     location: [52.495219906474766, 13.428709436852403],
     website: "https://boulderklub.de",
-    embedding: 'Name: Boulderklub; Description: Since September 2015, everyone from young to old, from beginners to experts, has had the opportunity to pursue their passion for bouldering or get to know this unique form of climbing at the Kreuzberg Boulder Club.; Address: Ohlauer Str. 38, 10999 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga, bouldering;',
+    embedding: 'Name: Boulderklub; Address: Ohlauer Str. 38, 10999 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga, bouldering;',
   },
   {
     name: "BEAT81",
@@ -83,7 +83,7 @@ const venues = [
     address: "Rosa-Luxemburg-Straße 17, 10178 Berlin",
     location: [52.5251393851855, 13.410136665165558],
     website: "https://www.beat81.com",
-    embedding: 'Name: BEAT81; Description: Join the movement and burn up to 1000 kcal in less than 45 min with powerful HIIT and strength group classes in a BEAT81 location near you.; Address: Rosa-Luxemburg-Straße 17, 10178 Berlin; Plans: M, L, XL; Amenities: showers; Activities: fitness, bootcamp, functional training;',
+    embedding: 'Name: BEAT81; Address: Rosa-Luxemburg-Straße 17, 10178 Berlin; Plans: M, L, XL; Amenities: showers; Activities: fitness, bootcamp, functional training;',
   },
   {
     name: "Squash House",
@@ -92,7 +92,7 @@ const venues = [
     address: "Vulkanstraße 3, 10367 Berlin",
     location: [52.524315470431276, 13.486097336082949],
     website: "https://www.squash-house.de",
-    embedding: 'Name: Squash House; Description: At our partner Squash House in Lichtenberg you can play squash, badminton and table tennis. In addition to modern courts, the Squash House in Lichtenberg also offers you a great wellness area so you can relax a little after the game.; Address: Vulkanstraße 3, 10367 Berlin; Plans: M, L, XL; Amenities: showers; Activities: badminton, squash, table tennis;'
+    embedding: 'Name: Squash House; Address: Vulkanstraße 3, 10367 Berlin; Plans: M, L, XL; Amenities: showers; Activities: badminton, squash, table tennis;'
   },
   {
     name: "Yoga on the Move",
@@ -101,7 +101,7 @@ const venues = [
     address: "Akazienstraße 27, 10823 Berlin",
     location: [52.48683125206266, 13.354570732143268],
     website: "https://www.yogaonthemove.de",
-    embedding: 'Name: Yoga on the Move; Description: The Shala is the home base of the Yoga on the Move collective. After teaching pop-up classes in the most beautiful places in Berlin for many years, we now invite you to our own studio in Schöneberg.; Address: Akazienstraße 27, 10823 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga;'
+    embedding: 'Name: Yoga on the Move; Address: Akazienstraße 27, 10823 Berlin; Plans: M, L, XL; Amenities: showers; Activities: yoga;'
   }
 ];
 

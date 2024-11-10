@@ -3,17 +3,18 @@
 import { genSaltSync, hashSync } from "bcrypt-ts";
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 
+
+import { activities } from "./schemas/activities";
+import { activitiesVenues } from "./schemas/activities-venues";
+import { amenities } from "./schemas/amenities";
+import { amenitiesVenues } from "./schemas/amenities-venues";
 import { chats } from "./schemas/chats";
+import { plans } from "./schemas/plans";
+import { plansVenues } from "./schemas/plans-venues";
 import { User, users } from "./schemas/users";
+import { venues } from "./schemas/venues";
 
 import { db } from ".";
-import { activities } from "./schemas/activities";
-import { amenities } from "./schemas/amenities";
-import { plans } from "./schemas/plans";
-import { venues } from "./schemas/venues";
-import { activitiesVenues } from "./schemas/activities-venues";
-import { amenitiesVenues } from "./schemas/amenities-venues";
-import { plansVenues } from "./schemas/plans-venues";
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {

@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, primaryKey, serial, unique } from "drizzle-orm/pg-core";
+import { integer, pgTable, unique } from "drizzle-orm/pg-core";
 
 import { activities } from "./activities";
 import { venues } from "./venues";

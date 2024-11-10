@@ -1,4 +1,5 @@
 import { convertToCoreMessages, Message, streamText } from 'ai';
+import { cookies } from 'next/headers';
 import { z } from 'zod';
 
 import { auth } from '@/app/(auth)/auth';
@@ -6,7 +7,6 @@ import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
 import { deleteChatById, getActivities, getAmenities, getChatById, getPlans, getVenues, saveChat } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
-import { cookies } from 'next/headers';
 
 export async function POST(request: Request) {
   const {
