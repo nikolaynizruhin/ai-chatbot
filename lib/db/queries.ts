@@ -15,6 +15,8 @@ import { User, users } from "./schemas/users";
 import { venues } from "./schemas/venues";
 
 import { db } from ".";
+import { cities } from "./schemas/cities";
+import { districts } from "./schemas/districts";
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -165,6 +167,24 @@ export async function getPlans() {
     return await db.select().from(plans);
   } catch (error) {
     console.error("Failed to get plans from database");
+    throw error;
+  }
+}
+
+export async function getCities() {
+  try {
+    return await db.select().from(cities);
+  } catch (error) {
+    console.error("Failed to get cities from database");
+    throw error;
+  }
+}
+
+export async function getDistricts() {
+  try {
+    return await db.select().from(districts);
+  } catch (error) {
+    console.error("Failed to get districts from database");
     throw error;
   }
 }

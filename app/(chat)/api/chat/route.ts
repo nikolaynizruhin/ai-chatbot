@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
-import { deleteChatById, getActivities, getAmenities, getChatById, getPlans, getVenues, saveChat } from '@/lib/db/queries';
+import { deleteChatById, getActivities, getAmenities, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
 
 export async function POST(request: Request) {
@@ -26,10 +26,12 @@ export async function POST(request: Request) {
     return new Response('Model not found', { status: 404 });
   }
 
-  const [activities, amenities, plans] = await Promise.all([
+  const [activities, amenities, plans, cities, districts] = await Promise.all([
     getActivities(),
     getAmenities(),
     getPlans(),
+    getCities(),
+    getDistricts(),
   ]);
 
   const activity = convertToEnum(activities);
@@ -40,6 +42,12 @@ export async function POST(request: Request) {
 
   const plan = convertToEnum(plans);
   const planMap = convertToMap(plans);
+
+  const city = convertToEnum(cities);
+  const cityMap = convertToMap(cities);
+
+  const district = convertToEnum(districts);
+  const districtMap = convertToMap(districts);
 
   const cookieStore = await cookies()
   const position = cookieStore.get('position')?.value.split(',') ?? []
@@ -81,15 +89,19 @@ export async function POST(request: Request) {
       searchVenues: {
         description: "Search for venues based on the given parameters",
         parameters: z.object({
+          cities: z.enum(city).array().describe("Cities where the venues are located"),
+          districts: z.enum(district).array().describe("City districts where the venues are located"),
           activities: z.enum(activity).array().describe("Activities that can be practiced on site"),
           amenities: z.enum(amenity).array().describe("Amenities available on site"),
           plans: z.enum(plan).array().describe("Membership plans allowed on site"),
           radius: z.number().positive().describe("The radius in which the search for venues takes place in meters. If the user requests venues 'near me', set the radius to 3000 meters. Default radius is 10000"),
         }),
-        execute: async ({ activities, amenities, plans, radius }) => {
+        execute: async ({ cities, districts, activities, amenities, plans, radius }) => {
           activities = convertToId(activities, activityMap);
           amenities = convertToId(amenities, amenityMap);
           plans = convertToId(plans, planMap)
+          cities = convertToId(cities, cityMap)
+          districts = convertToId(districts, districtMap)
 
           const result = await getVenues(activities, amenities, plans, position, radius);
 
