@@ -1,5 +1,5 @@
 {
-  "id": "82faa04c-78d3-46ee-ae65-14c039a3f062",
+  "id": "de01bbaf-bf4b-4a28-9861-f8a2a4dab8a8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -943,6 +943,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "district_id": {
+          "name": "district_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
         "location": {
           "name": "location",
           "type": "geometry(point)",
@@ -989,7 +995,21 @@
           "with": {}
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "venues_district_id_districts_id_fk": {
+          "name": "venues_district_id_districts_id_fk",
+          "tableFrom": "venues",
+          "tableTo": "districts",
+          "columnsFrom": [
+            "district_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},

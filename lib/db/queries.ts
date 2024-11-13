@@ -9,6 +9,7 @@ import { activitiesVenues } from "./schemas/activities-venues";
 import { amenities } from "./schemas/amenities";
 import { amenitiesVenues } from "./schemas/amenities-venues";
 import { chats } from "./schemas/chats";
+import { districts as districtsTable } from "./schemas/districts";
 import { plans } from "./schemas/plans";
 import { plansVenues } from "./schemas/plans-venues";
 import { User, users } from "./schemas/users";
@@ -104,7 +105,15 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
-export async function getVenues(activities: number[] = [], amenities: number[] = [], plans: number[] = [], position: string[] = [], radius: number) {
+export async function getVenues(
+  activities: number[] = [],
+  amenities: number[] = [],
+  plans: number[] = [],
+  cities: number[] = [],
+  districts: number[] = [],
+  position: string[] = [],
+  radius: number,
+) {
   try {
     const location = sql`ST_SetSRID(ST_MakePoint(${position[0]}, ${position[1]}), 4326)`;
     const distance = sql`ROUND(ST_DistanceSphere(${venues.location}, ${location}))`;
@@ -117,6 +126,8 @@ export async function getVenues(activities: number[] = [], amenities: number[] =
         activities.length > 0 ? inArray(venues.id, db.select({ id: activitiesVenues.venueId }).from(activitiesVenues).where(inArray(activitiesVenues.activityId, activities))) : undefined,
         amenities.length > 0 ? inArray(venues.id, db.select({ id: amenitiesVenues.venueId }).from(amenitiesVenues).where(inArray(amenitiesVenues.amenityId, amenities))) : undefined,
         plans.length > 0 ? inArray(venues.id, db.select({ id: plansVenues.venueId }).from(plansVenues).where(inArray(plansVenues.planId, plans))) : undefined,
+        districts.length > 0 ? inArray(venues.districtId, districts) : undefined,
+        cities.length > 0 ? inArray(venues.districtId, db.select({ id: districtsTable.id }).from(districtsTable).where(inArray(districtsTable.cityId, cities))) : undefined,
         sql`${distance} <= ${radius}`
       ),
       with: {

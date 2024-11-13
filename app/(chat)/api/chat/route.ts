@@ -103,7 +103,15 @@ export async function POST(request: Request) {
           cities = convertToId(cities, cityMap)
           districts = convertToId(districts, districtMap)
 
-          const result = await getVenues(activities, amenities, plans, position, radius);
+          const result = await getVenues(
+            activities,
+            amenities,
+            plans,
+            cities,
+            districts,
+            position,
+            radius
+          );
 
           return result;
         },

@@ -107,6 +107,7 @@ CREATE TABLE IF NOT EXISTS "venues" (
 	"website" varchar NOT NULL,
 	"address" varchar NOT NULL,
 	"zip" varchar NOT NULL,
+	"district_id" integer NOT NULL,
 	"location" geometry(point) NOT NULL,
 	"embedding" vector(1536)
 );
@@ -185,6 +186,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "plans_venues" ADD CONSTRAINT "plans_venues_venue_id_venues_id_fk" FOREIGN KEY ("venue_id") REFERENCES "public"."venues"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "venues" ADD CONSTRAINT "venues_district_id_districts_id_fk" FOREIGN KEY ("district_id") REFERENCES "public"."districts"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
