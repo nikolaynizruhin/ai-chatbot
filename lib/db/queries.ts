@@ -105,7 +105,8 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
-export async function getVenues(
+export async function searchVenues(
+  venueIds: number[] = [],
   activities: number[] = [],
   amenities: number[] = [],
   plans: number[] = [],
@@ -128,6 +129,7 @@ export async function getVenues(
         plans.length > 0 ? inArray(venues.id, db.select({ id: plansVenues.venueId }).from(plansVenues).where(inArray(plansVenues.planId, plans))) : undefined,
         districts.length > 0 ? inArray(venues.districtId, districts) : undefined,
         cities.length > 0 ? inArray(venues.districtId, db.select({ id: districtsTable.id }).from(districtsTable).where(inArray(districtsTable.cityId, cities))) : undefined,
+        venueIds.length > 0 ? inArray(venues.id, venueIds) : undefined,
         sql`${distance} <= ${radius}`
       ),
       with: {
@@ -196,6 +198,15 @@ export async function getDistricts() {
     return await db.select().from(districts);
   } catch (error) {
     console.error("Failed to get districts from database");
+    throw error;
+  }
+}
+
+export async function getVenues() {
+  try {
+    return await db.select().from(venues);
+  } catch (error) {
+    console.error("Failed to get venues from database");
     throw error;
   }
 }
