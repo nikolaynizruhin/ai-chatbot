@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
-import { deleteChatById, getActivities, getAmenities, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat, searchVenues } from '@/lib/db/queries';
+import { deleteChatById, getActivities, getAmenities, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat, searchAppointments, searchVenues } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
 
 export async function POST(request: Request) {
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
   const result = await streamText({
     model: customModel(model),
     system: `\n
-      - you help users search venues!
+      - you help users search venues and classes!
       - keep your responses limited to a sentence.
       - DO NOT output lists.
       - after every tool call, pretend you're showing the result to the user and keep your response limited to a phrase.
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
       - ask follow up questions to nudge user into the optimal flow
       - ask for any details you don't know, like activity of venue, etc.'
       - here's the optimal flow
-        - search for venues
+        - search for classes
       '
     `,
     messages: coreMessages,
@@ -118,6 +118,19 @@ export async function POST(request: Request) {
             districts,
             position,
             radius
+          );
+        },
+      },
+      searchAppointments: {
+        description: "Search for classes based on the given parameters",
+        parameters: z.object({
+          activities: z.enum(activity).array().describe("Activities that can be practiced in the class"),
+        }),
+        execute: async ({ activities }) => {
+          activities = convertToId(activities, activityMap);
+
+          return await searchAppointments(
+            activities
           );
         },
       },

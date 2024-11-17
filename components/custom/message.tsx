@@ -54,6 +54,8 @@ export const Message = ({
                         <Weather weatherAtLocation={result} />
                       ) : toolName === 'searchVenues' ? (
                         <p>{JSON.stringify(result)}</p>
+                      ) : toolName === 'searchAppointments' ? (
+                        <p>{JSON.stringify(result)}</p>
                       ) : null}
                     </div>
                   );
@@ -63,6 +65,8 @@ export const Message = ({
                       {toolName === 'getWeather' ? (
                         <Weather />
                       ) : toolName === 'searchVenues' ? (
+                        <p>Thinking...</p>
+                      ) : toolName === 'searchAppointments' ? (
                         <p>Thinking...</p>
                       ) : null}
                     </div>

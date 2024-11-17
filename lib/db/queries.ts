@@ -18,6 +18,7 @@ import { venues } from "./schemas/venues";
 import { db } from ".";
 import { cities } from "./schemas/cities";
 import { districts } from "./schemas/districts";
+import { appointments } from "./schemas/appointments";
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -153,6 +154,22 @@ export async function searchVenues(
   } catch (error) {
     console.log(error)
     console.error("Failed to get venues from database");
+    throw error;
+  }
+}
+
+export async function searchAppointments(
+  activities: number[] = [],
+) {
+  try {
+    return await db.query.appointments.findMany({
+      where: and(
+        activities.length > 0 ? inArray(appointments.activityId, activities) : undefined,
+      ),
+    });
+  } catch (error) {
+    console.log(error)
+    console.error("Failed to get appointments from database");
     throw error;
   }
 }
