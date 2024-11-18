@@ -117,7 +117,7 @@ export async function POST(request: Request) {
             cities,
             districts,
             position,
-            radius
+            radius,
           );
         },
       },
@@ -125,12 +125,15 @@ export async function POST(request: Request) {
         description: "Search for classes based on the given parameters",
         parameters: z.object({
           activities: z.enum(activity).array().describe("Activities that can be practiced in the class"),
+          venues: z.enum(venue).array().describe("Names of venues"),
         }),
-        execute: async ({ activities }) => {
+        execute: async ({ activities, venues }) => {
           activities = convertToId(activities, activityMap);
+          venues = convertToId(venues, venueMap)
 
           return await searchAppointments(
-            activities
+            activities,
+            venues,
           );
         },
       },

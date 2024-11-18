@@ -160,11 +160,13 @@ export async function searchVenues(
 
 export async function searchAppointments(
   activities: number[] = [],
+  venueIds: number[] = [],
 ) {
   try {
     return await db.query.appointments.findMany({
       where: and(
         activities.length > 0 ? inArray(appointments.activityId, activities) : undefined,
+        venueIds.length > 0 ? inArray(appointments.venueId, venueIds) : undefined,
       ),
     });
   } catch (error) {
