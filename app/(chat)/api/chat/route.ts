@@ -5,8 +5,9 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
-import { deleteChatById, getActivities, getAmenities, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat, searchAppointments, searchVenues } from '@/lib/db/queries';
+import { deleteChatById, getActivities, getAmenities, getAppointments, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat, searchAppointments, searchVenues } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
+import { appointments } from '@/lib/db/schemas/appointments';
 
 export async function POST(request: Request) {
   const {
@@ -26,13 +27,14 @@ export async function POST(request: Request) {
     return new Response('Model not found', { status: 404 });
   }
 
-  const [activities, amenities, plans, cities, districts, venues] = await Promise.all([
+  const [activities, amenities, plans, cities, districts, venues, appointments] = await Promise.all([
     getActivities(),
     getAmenities(),
     getPlans(),
     getCities(),
     getDistricts(),
     getVenues(),
+    getAppointments(),
   ]);
 
   const activity = convertToEnum(activities);
@@ -52,6 +54,9 @@ export async function POST(request: Request) {
 
   const venue = convertToEnum(venues);
   const venueMap = convertToMap(venues);
+
+  const appointment = convertToEnum(appointments);
+  const appointmentMap = convertToMap(appointments);
 
   const cookieStore = await cookies()
   const position = cookieStore.get('position')?.value.split(',') ?? []
@@ -124,14 +129,17 @@ export async function POST(request: Request) {
       searchAppointments: {
         description: "Search for classes based on the given parameters",
         parameters: z.object({
+          appointments: z.enum(appointment).array().describe("Names of appointments"),
           activities: z.enum(activity).array().describe("Activities that can be practiced in the class"),
           venues: z.enum(venue).array().describe("Names of venues"),
         }),
-        execute: async ({ activities, venues }) => {
+        execute: async ({ activities, venues, appointments }) => {
+          appointments = convertToId(appointments, appointmentMap);
           activities = convertToId(activities, activityMap);
           venues = convertToId(venues, venueMap)
 
           return await searchAppointments(
+            appointments,
             activities,
             venues,
           );

@@ -159,12 +159,14 @@ export async function searchVenues(
 }
 
 export async function searchAppointments(
+  appointmentIds: number[] = [],
   activities: number[] = [],
   venueIds: number[] = [],
 ) {
   try {
     return await db.query.appointments.findMany({
       where: and(
+        appointmentIds.length > 0 ? inArray(appointments.id, appointmentIds) : undefined,
         activities.length > 0 ? inArray(appointments.activityId, activities) : undefined,
         venueIds.length > 0 ? inArray(appointments.venueId, venueIds) : undefined,
       ),
@@ -224,6 +226,15 @@ export async function getDistricts() {
 export async function getVenues() {
   try {
     return await db.select().from(venues);
+  } catch (error) {
+    console.error("Failed to get venues from database");
+    throw error;
+  }
+}
+
+export async function getAppointments() {
+  try {
+    return await db.select().from(appointments);
   } catch (error) {
     console.error("Failed to get venues from database");
     throw error;
