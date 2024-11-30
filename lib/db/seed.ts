@@ -6,17 +6,17 @@ import { activitiesVenues } from "./schemas/activities-venues";
 import { amenities } from "./schemas/amenities";
 import { amenitiesVenues } from "./schemas/amenities-venues";
 import { appointments } from "./schemas/appointments";
+import { cities } from "./schemas/cities";
 import { images } from "./schemas/images";
 import { imagesVenues } from "./schemas/images-venues";
 import { plans } from "./schemas/plans";
 import { plansVenues } from "./schemas/plans-venues";
 import { venues } from "./schemas/venues";
 import { addEmbeddings } from "../ai/embedding";
+import { countries } from "./schemas/countries";
+import { districts } from "./schemas/districts";
 
 import { db } from ".";
-import { countries } from "./schemas/countries";
-import { cities } from "./schemas/cities";
-import { districts } from "./schemas/districts";
 
 config({
   path: ".env.local",

@@ -7,7 +7,6 @@ import { customModel } from '@/lib/ai';
 import { Model, models } from '@/lib/ai/model';
 import { deleteChatById, getActivities, getAmenities, getAppointments, getChatById, getCities, getDistricts, getPlans, getVenues, saveChat, searchAppointments, searchVenues } from '@/lib/db/queries';
 import { convertToEnum, convertToId, convertToMap } from '@/lib/utils';
-import { appointments } from '@/lib/db/schemas/appointments';
 
 export async function POST(request: Request) {
   const {
@@ -132,8 +131,10 @@ export async function POST(request: Request) {
           appointments: z.enum(appointment).array().describe("Names of appointments"),
           activities: z.enum(activity).array().describe("Activities that can be practiced in the class"),
           venues: z.enum(venue).array().describe("Names of venues"),
+          startAt: z.string().describe("ISO 8601 date and time with UTC timezone of the appointment. Range start"),
+          endAt: z.string().describe("ISO 8601 date and time with UTC timezone of the appointment. Range end"),
         }),
-        execute: async ({ activities, venues, appointments }) => {
+        execute: async ({ activities, venues, appointments, startAt, endAt }) => {
           appointments = convertToId(appointments, appointmentMap);
           activities = convertToId(activities, activityMap);
           venues = convertToId(venues, venueMap)
@@ -142,6 +143,8 @@ export async function POST(request: Request) {
             appointments,
             activities,
             venues,
+            startAt,
+            endAt,
           );
         },
       },

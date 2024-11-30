@@ -1,4 +1,4 @@
-const getDate = (time: string) => new Date(`2024-10-25T${time}:00.000+02:00`);
+const getDate = (time: string) => new Date(`2024-10-25T${time}:00.000+00:00`);
 
 const activities = [
   { name: 'fitness' },

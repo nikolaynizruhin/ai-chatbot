@@ -1,24 +1,23 @@
 "server-only";
 
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, between, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
 
 
 import { activities } from "./schemas/activities";
 import { activitiesVenues } from "./schemas/activities-venues";
 import { amenities } from "./schemas/amenities";
 import { amenitiesVenues } from "./schemas/amenities-venues";
+import { appointments } from "./schemas/appointments";
 import { chats } from "./schemas/chats";
-import { districts as districtsTable } from "./schemas/districts";
+import { cities } from "./schemas/cities";
+import { districts as districtsTable , districts } from "./schemas/districts";
 import { plans } from "./schemas/plans";
 import { plansVenues } from "./schemas/plans-venues";
 import { User, users } from "./schemas/users";
 import { venues } from "./schemas/venues";
 
 import { db } from ".";
-import { cities } from "./schemas/cities";
-import { districts } from "./schemas/districts";
-import { appointments } from "./schemas/appointments";
 
 export async function getUser(email: string): Promise<Array<User>> {
   try {
@@ -162,6 +161,8 @@ export async function searchAppointments(
   appointmentIds: number[] = [],
   activities: number[] = [],
   venueIds: number[] = [],
+  startAt: string,
+  endAt: string,
 ) {
   try {
     return await db.query.appointments.findMany({
@@ -169,6 +170,7 @@ export async function searchAppointments(
         appointmentIds.length > 0 ? inArray(appointments.id, appointmentIds) : undefined,
         activities.length > 0 ? inArray(appointments.activityId, activities) : undefined,
         venueIds.length > 0 ? inArray(appointments.venueId, venueIds) : undefined,
+        startAt ? between(appointments.startAt, new Date(startAt), new Date(endAt)) : undefined,
       ),
     });
   } catch (error) {

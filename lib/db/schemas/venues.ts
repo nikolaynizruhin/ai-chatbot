@@ -3,8 +3,8 @@ import { geometry, index, integer, pgTable, varchar, vector } from "drizzle-orm/
 
 import { activitiesVenues } from "./activities-venues";
 import { amenitiesVenues } from "./amenities-venues";
-import { plansVenues } from "./plans-venues";
 import { districts } from "./districts";
+import { plansVenues } from "./plans-venues";
 
 export const venues = pgTable(
   'venues',

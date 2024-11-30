@@ -1,7 +1,8 @@
 import { relations } from "drizzle-orm";
 import { geometry, index, integer, pgTable, varchar } from "drizzle-orm/pg-core";
-import { districts } from "./districts";
+
 import { countries } from "./countries";
+import { districts } from "./districts";
 
 export const cities = pgTable(
   'cities',
