@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
   const coreMessages = convertToCoreMessages(messages);
 
-  const result = await streamText({
+  const result = streamText({
     model: customModel(model),
     system: `\n
       - you help users search venues and classes!
@@ -149,12 +149,12 @@ export async function POST(request: Request) {
         },
       },
     },
-    onFinish: async ({ responseMessages }) => {
+    onFinish: async ({ response }) => {
       if (session.user && session.user.id) {
         try {
           await saveChat({
             id,
-            messages: [...coreMessages, ...responseMessages],
+            messages: [...coreMessages, ...response.messages],
             userId: session.user.id,
           });
         } catch (error) {
