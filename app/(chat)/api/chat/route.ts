@@ -103,7 +103,7 @@ export async function POST(request: Request) {
           activities: z.enum(activity).array().describe("Activities that can be practiced on site"),
           amenities: z.enum(amenity).array().describe("Amenities available on site"),
           plans: z.enum(plan).array().describe("Membership plans allowed on site"),
-          radius: z.number().positive().describe("The radius in which the search for venues takes place in meters. If the user requests venues 'near me', set the radius to 3000 meters. Default radius is 10000"),
+          radius: z.number().positive().describe("The radius in which the search for venues takes place in meters. If the user requests venues 'near me', set the radius to 3000 meters. Default radius is 10000 meters"),
         }),
         execute: async ({ venues, cities, districts, activities, amenities, plans, radius }) => {
           activities = convertToId(activities, activityMap);
@@ -129,22 +129,32 @@ export async function POST(request: Request) {
         description: "Search for classes based on the given parameters",
         parameters: z.object({
           appointments: z.enum(appointment).array().describe("Names of appointments"),
+          cities: z.enum(city).array().describe("Cities where the classes are located"),
+          districts: z.enum(district).array().describe("City districts where the classes are located"),
           activities: z.enum(activity).array().describe("Activities that can be practiced in the class"),
           venues: z.enum(venue).array().describe("Names of venues"),
           startAt: z.string().describe("ISO 8601 date and time with UTC timezone of the appointment. Range start"),
           endAt: z.string().describe("ISO 8601 date and time with UTC timezone of the appointment. Range end"),
+          radius: z.number().positive().describe("The radius in which the search for classes takes place in meters. If the user requests classes 'near me', set the radius to 3000 meters. Default radius is 10000 meters"),
         }),
-        execute: async ({ activities, venues, appointments, startAt, endAt }) => {
+        execute: async ({ activities, venues, appointments, cities, districts, startAt, endAt, radius }) => {
+          console.log({ activities, venues, appointments, cities, districts, startAt, endAt, radius })
           appointments = convertToId(appointments, appointmentMap);
           activities = convertToId(activities, activityMap);
           venues = convertToId(venues, venueMap)
+          cities = convertToId(cities, cityMap)
+          districts = convertToId(districts, districtMap)
 
           return await searchAppointments(
             appointments,
             activities,
             venues,
+            cities,
+            districts,
             startAt,
             endAt,
+            position,
+            radius,
           );
         },
       },

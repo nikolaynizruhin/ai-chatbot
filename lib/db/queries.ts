@@ -11,7 +11,7 @@ import { amenitiesVenues } from "./schemas/amenities-venues";
 import { appointments } from "./schemas/appointments";
 import { chats } from "./schemas/chats";
 import { cities } from "./schemas/cities";
-import { districts as districtsTable , districts } from "./schemas/districts";
+import { districts as districtsTable, districts } from "./schemas/districts";
 import { plans } from "./schemas/plans";
 import { plansVenues } from "./schemas/plans-venues";
 import { User, users } from "./schemas/users";
@@ -130,7 +130,7 @@ export async function searchVenues(
         districts.length > 0 ? inArray(venues.districtId, districts) : undefined,
         cities.length > 0 ? inArray(venues.districtId, db.select({ id: districtsTable.id }).from(districtsTable).where(inArray(districtsTable.cityId, cities))) : undefined,
         venueIds.length > 0 ? inArray(venues.id, venueIds) : undefined,
-        sql`${distance} <= ${radius}`
+        cities.length === 0 && districts.length === 0 ? sql`${distance} <= ${radius}` : undefined,
       ),
       with: {
         activitiesVenues: {
@@ -161,17 +161,35 @@ export async function searchAppointments(
   appointmentIds: number[] = [],
   activities: number[] = [],
   venueIds: number[] = [],
+  cities: number[] = [],
+  districts: number[] = [],
   startAt: string,
   endAt: string,
+  position: string[] = [],
+  radius: string,
 ) {
   try {
+    const location = sql`ST_SetSRID(ST_MakePoint(${position[0]}, ${position[1]}), 4326)`;
+    const distance = sql`ROUND(ST_DistanceSphere(${venues.location}, ${location}))`;
+
     return await db.query.appointments.findMany({
       where: and(
         appointmentIds.length > 0 ? inArray(appointments.id, appointmentIds) : undefined,
         activities.length > 0 ? inArray(appointments.activityId, activities) : undefined,
         venueIds.length > 0 ? inArray(appointments.venueId, venueIds) : undefined,
+        cities.length > 0 ? inArray(appointments.venueId, db.select({ id: venues.id }).from(venues).where(inArray(venues.districtId, db.select({ id: districtsTable.id }).from(districtsTable).where(inArray(districtsTable.cityId, cities))))) : undefined,
+        districts.length > 0 ? inArray(appointments.venueId, db.select({ id: venues.id }).from(venues).where(inArray(venues.districtId, districts))) : undefined,
         startAt ? between(appointments.startAt, new Date(startAt), new Date(endAt)) : undefined,
+        cities.length === 0 && districts.length === 0 ? inArray(appointments.venueId, db.select({ id: venues.id }).from(venues).where(sql`${distance} <= ${radius}`)) : undefined,
       ),
+      with: {
+        activity: true,
+        venue: {
+          columns: {
+            name: true
+          }
+        },
+      }
     });
   } catch (error) {
     console.log(error)
