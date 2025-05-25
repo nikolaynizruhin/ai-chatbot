@@ -59,3 +59,13 @@ pnpm dev
 ```
 
 Your app template should now be running on [localhost:3000](http://localhost:3000/).
+
+4. Run postgresql with postgis and pgvector:
+```bash
+docker build -t postgis_pgvector .
+docker run --name postgis_pgvector_container -e POSTGRES_PASSWORD=password -p 5436:5432 -d postgis_pgvector
+```
+If you already have a Docker image, run:
+```bash
+docker start postgis_pgvector_container
+```
