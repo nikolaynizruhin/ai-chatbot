@@ -12,12 +12,10 @@ const labelVariants = cva(
 
 const Label = (
   {
-    ref,
     className,
     ...props
   }
 ) => (<LabelPrimitive.Root
-  ref={ref}
   className={cn(labelVariants(), className)}
   {...props}
 />)

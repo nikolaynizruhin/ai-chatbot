@@ -17,19 +17,15 @@ const SheetPortal = SheetPrimitive.Portal
 
 const SheetOverlay = (
   {
-    ref,
     className,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay> & {
-    ref: React.RefObject<React.ElementRef<typeof SheetPrimitive.Overlay>>;
-  }
+  }: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
 ) => (<SheetPrimitive.Overlay
   className={cn(
     "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
     className
   )}
   {...props}
-  ref={ref}
 />)
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
@@ -58,18 +54,14 @@ interface SheetContentProps
 
 const SheetContent = (
   {
-    ref,
     side = "right",
     className,
     children,
     ...props
-  }: SheetContentProps & {
-    ref: React.RefObject<React.ElementRef<typeof SheetPrimitive.Content>>;
-  }
+  }: SheetContentProps
 ) => (<SheetPortal>
   <SheetOverlay />
   <SheetPrimitive.Content
-    ref={ref}
     className={cn(sheetVariants({ side }), className)}
     {...props}
   >
@@ -112,14 +104,10 @@ SheetFooter.displayName = "SheetFooter"
 
 const SheetTitle = (
   {
-    ref,
     className,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title> & {
-    ref: React.RefObject<React.ElementRef<typeof SheetPrimitive.Title>>;
-  }
+  }: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
 ) => (<SheetPrimitive.Title
-  ref={ref}
   className={cn("text-lg font-semibold text-foreground", className)}
   {...props}
 />)
@@ -127,14 +115,10 @@ SheetTitle.displayName = SheetPrimitive.Title.displayName
 
 const SheetDescription = (
   {
-    ref,
     className,
     ...props
-  }: React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description> & {
-    ref: React.RefObject<React.ElementRef<typeof SheetPrimitive.Description>>;
-  }
+  }: React.ComponentProps<typeof SheetPrimitive.Description>
 ) => (<SheetPrimitive.Description
-  ref={ref}
   className={cn("text-sm text-muted-foreground", className)}
   {...props}
 />)
